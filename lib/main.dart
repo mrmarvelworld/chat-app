@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
 
 const userId1 = '33f771e2-311b-4d4f-9b14-d1e1c59936d3';
 const userId2 = '94a6b01e-319e-494e-b454-98f22ab0d109';
-
+const chatRoomId = '8d162274-6cb8-4776-815a-8e721ebfb76d';
 final chatRoom = ChatRoom(
   id: '8d162274-6cb8-4776-815a-8e721ebfb76d',
   participants: const [
@@ -53,7 +53,7 @@ final chatRoom = ChatRoom(
   ],
   lastMessage: Message(
     id: 'de120f3a-dbca-4330-9e2e-18b55a2fb9e5',
-    chatRoomId: '8d162274-6cb8-4776-815a-8e721ebfb76d',
+    chatRoomId: chatRoomId,
     senderUserId: userId1,
     receiverUserId: userId2,
     content: 'Hey! I am good, thanks.',
@@ -61,3 +61,44 @@ final chatRoom = ChatRoom(
   ),
   unreadCount: 0,
 );
+
+// Create messages
+final messages = <Message>[
+  // Sender messages
+  Message(
+    chatRoomId: chatRoomId,
+    senderUserId: userId1,
+    receiverUserId: userId2,
+    content: 'Hello there!',
+    createdAt: DateTime.now(),
+  ),
+  Message(
+    chatRoomId: chatRoomId,
+    senderUserId: userId2,
+    receiverUserId: userId1,
+    content: 'How are you?',
+    createdAt: DateTime.now().add(Duration(minutes: 5)),
+  ),
+  // Receiver messages
+  Message(
+    chatRoomId: chatRoomId,
+    senderUserId: userId1,
+    receiverUserId: userId2,
+    content: 'My Bro I am fine',
+    createdAt: DateTime.now().add(Duration(minutes: 10)),
+  ),
+  Message(
+    chatRoomId: chatRoomId,
+    senderUserId: userId1,
+    receiverUserId: userId2,
+    content: 'What about you?',
+    createdAt: DateTime.now().add(Duration(minutes: 15)),
+  ),
+  Message(
+    chatRoomId: chatRoomId,
+    senderUserId: userId2,
+    receiverUserId: userId1,
+    content: 'Any plans for today?',
+    createdAt: DateTime.now().add(Duration(minutes: 20)),
+  ),
+];

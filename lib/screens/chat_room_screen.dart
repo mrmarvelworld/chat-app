@@ -1,5 +1,6 @@
 import 'package:chat_app/main.dart';
 import 'package:chat_app/widgets/avatar.dart';
+import 'package:chat_app/widgets/message_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
@@ -57,9 +58,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             Expanded(
                 child: ListView.builder(
               itemBuilder: (context, index) {
-                return MessageBubble(message: message[index]);
+                final message = messages[index];
+                final showImage = index + 1 == messages.length ||
+                    messages[index + 1].senderUserId != message.senderUserId;
+                return Row(
+                    mainAxisAlignment: (message.senderUserId != userId1)
+                        ? MainAxisAlignment.end
+                        : MainAxisAlignment.start,
+                    children: <Widget>[
+                      if (showImage && message.senderUserId == userId1)
+                        Avatar(
+                            imageUrl: otherParticipant.avatarUrl, radius: 12),
+                      MessageBubble(message: message),
+                      if (showImage && message.senderUserId != userId1)
+                        Avatar(imageUrl: otherParticipant.avatarUrl, radius: 12)
+                    ]);
               },
-              itemCount: message.length,
+              itemCount: messages.length,
             )),
             Row(
               children: <Widget>[
@@ -73,6 +88,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   child: TextFormField(
                     controller: messageController,
                     decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.send),
                       fillColor:
                           Theme.of(context).colorScheme.primary.withAlpha(100),
                       hintText: 'Send a message',
@@ -88,25 +104,5 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         ),
       ),
     );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  const MessageBubble({
-    super.key,
-    required this.message,
-  });
-
-  final Message message;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final alignment = (message.senderUserId != userId1)
-        ? Alignment.centerRight
-        : Alignment.centerRight;
-    return Container(
-        constraints: BoxConstraints(maxWidth: size.width * 0.66),
-        child: Text(message[index].content ?? ""));
   }
 }
